@@ -72,7 +72,7 @@ class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
 			<input type="hidden" id="' . $this->facetName . '_url" value="' . $facetLinkBuilder->getReplaceFacetOptionUrl($this->facetName) . '" />
 			<div class="input-daterange input-group" id="' . $this->facetName . '-datepicker">
 				<input id="start_date_' . $this->facetName . '" type="text" class="input-sm form-control" name="start" value="' . $dateEnds['start'] . '" />
-				<span class="input-group-addon">' . $this->parentPlugin->pi_getLL('rangebarrier') . '</span>
+				<span class="input-group-addon">###LLL:rangebarrier###</span>
     			<input id="end_date_' . $this->facetName . '" type="text" class="input-sm form-control" name="end" value="' . $dateEnds['end'] . '" />
 			</div>
 		';
