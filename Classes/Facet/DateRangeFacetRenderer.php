@@ -145,9 +145,7 @@ class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
 						todayBtn: "linked",
 						autoclose: true,
 						todayHighlight: true
-					});
-
-					jQuery("#end_date_' . $this->facetName . '").on(\'hide\', function() {
+					}).on(\'hide\', function() {
 						solrBsDateRangeRequest("'
 						. $this->facetName
 						. '", "'
