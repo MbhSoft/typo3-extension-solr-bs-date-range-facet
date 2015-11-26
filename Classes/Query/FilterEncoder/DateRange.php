@@ -32,7 +32,7 @@ namespace MbhSoftware\SolrBsDateRangeFacet\Query\FilterEncoder;
  *
  * @author	Markus Goldbach <markus.goldbach@dkd.de>
  */
-class DateRange implements \Tx_Solr_QueryFilterEncoder, \Tx_Solr_QueryFacetBuilder {
+class DateRange implements \ApacheSolrForTypo3\Solr\Query\FilterEncoder\FilterEncoder, \ApacheSolrForTypo3\Solr\Facet\FacetBuilder {
 
 	/**
 	 * Delimiter for date parts in the URL.
@@ -56,9 +56,9 @@ class DateRange implements \Tx_Solr_QueryFilterEncoder, \Tx_Solr_QueryFacetBuild
 		$dateRangeStart .= '000000';
 		$dateRangeEnd  .= '235959';
 
-		$dateRangeFilter  = '[' . \Tx_Solr_Util::timestampToIso(strtotime($dateRangeStart));
+		$dateRangeFilter  = '[' . \ApacheSolrForTypo3\Solr\Util::timestampToIso(strtotime($dateRangeStart));
 		$dateRangeFilter .= ' TO ';
-		$dateRangeFilter .= \Tx_Solr_Util::timestampToIso(strtotime($dateRangeEnd)) . ']';
+		$dateRangeFilter .= \ApacheSolrForTypo3\Solr\Util::timestampToIso(strtotime($dateRangeEnd)) . ']';
 
 		return $dateRangeFilter;
 	}

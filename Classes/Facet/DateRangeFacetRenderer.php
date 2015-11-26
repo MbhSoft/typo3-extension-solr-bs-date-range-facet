@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Date range facet renderer.
  */
-class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
+class DateRangeFacetRenderer extends \ApacheSolrForTypo3\Solr\Facet\AbstractFacetRenderer {
 
 	/**
 	 * Provides the internal type of facets the renderer handles.
@@ -38,10 +38,10 @@ class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
 	 * @return string Facet internal type
 	 */
 	public static function getFacetInternalType() {
-		return \Tx_Solr_Facet_Facet::TYPE_RANGE;
+		return \ApacheSolrForTypo3\Solr\Facet\Facet::TYPE_RANGE;
 	}
 
-	protected function renderFacetGlobalOptions() {
+	protected function renderFacetGeneralOptions() {
 		$this->loadJavaScriptFiles();
 		$this->loadStylesheets();
 	}
@@ -50,19 +50,19 @@ class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
 	 * Renders a date renage facet by providing two input fields, enhanced with
 	 * date pickers.
 	 *
-	 * @see Tx_Solr_Facet_SimpleFacetRenderer::render()
+	 * @see ApacheSolrForTypo3\Solr\Facet\SimpleFacetRenderer::render()
 	 */
 	public function renderFacetOptions() {
 
 		$dateEnds = $this->getDateEnds();
 
 		// the option's value will be appended by javascript after the slide event
-		$incompleteFacetOption = GeneralUtility::makeInstance('Tx_Solr_Facet_FacetOption',
+		$incompleteFacetOption = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\Facet\\FacetOption',
 			$this->facetName,
 			''
 		);
 
-		$facetLinkBuilder = GeneralUtility::makeInstance('Tx_Solr_Facet_LinkBuilder',
+		$facetLinkBuilder = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\Facet\\LinkBuilder',
 			$this->search->getQuery(),
 			$this->facetName,
 			$incompleteFacetOption
@@ -113,7 +113,7 @@ class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
 	 *
 	 */
 	protected function loadJavaScriptFiles() {
-		$javascriptManager = GeneralUtility::makeInstance('Tx_Solr_JavascriptManager');
+		$javascriptManager = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\JavascriptManager');
 
 		$javascriptManager->loadFile('library');
 		$javascriptManager->loadFile('bs.datepicker');
@@ -149,7 +149,7 @@ class DateRangeFacetRenderer extends \Tx_Solr_Facet_AbstractFacetRenderer {
 						solrBsDateRangeRequest("'
 						. $this->facetName
 						. '", "'
-						. \Tx_Solr_Query_FilterEncoder_DateRange::DELIMITER
+						. \ApacheSolrForTypo3\Solr\Query\FilterEncoder\DateRange::DELIMITER
 						. '")
 					});
 				});
