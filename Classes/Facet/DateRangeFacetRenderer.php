@@ -29,46 +29,51 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Date range facet renderer.
  */
-class DateRangeFacetRenderer extends \ApacheSolrForTypo3\Solr\Facet\AbstractFacetRenderer {
+class DateRangeFacetRenderer extends \ApacheSolrForTypo3\Solr\Facet\AbstractFacetRenderer
+{
 
-	/**
-	 * Provides the internal type of facets the renderer handles.
-	 * The type is one of field, range, or query.
-	 *
-	 * @return string Facet internal type
-	 */
-	public static function getFacetInternalType() {
-		return \ApacheSolrForTypo3\Solr\Facet\Facet::TYPE_RANGE;
-	}
+    /**
+     * Provides the internal type of facets the renderer handles.
+     * The type is one of field, range, or query.
+     *
+     * @return string Facet internal type
+     */
+    public static function getFacetInternalType()
+    {
+        return \ApacheSolrForTypo3\Solr\Facet\Facet::TYPE_RANGE;
+    }
 
-	protected function renderFacetGeneralOptions() {
-		$this->loadJavaScriptFiles();
-		$this->loadStylesheets();
-	}
+    protected function renderFacetGeneralOptions()
+    {
+        $this->loadJavaScriptFiles();
+        $this->loadStylesheets();
+    }
 
-	/**
-	 * Renders a date renage facet by providing two input fields, enhanced with
-	 * date pickers.
-	 *
-	 * @see ApacheSolrForTypo3\Solr\Facet\SimpleFacetRenderer::render()
-	 */
-	public function renderFacetOptions() {
+    /**
+     * Renders a date renage facet by providing two input fields, enhanced with
+     * date pickers.
+     *
+     * @see ApacheSolrForTypo3\Solr\Facet\SimpleFacetRenderer::render()
+     */
+    public function renderFacetOptions()
+    {
+        $dateEnds = $this->getDateEnds();
 
-		$dateEnds = $this->getDateEnds();
+        // the option's value will be appended by javascript after the slide event
+        $incompleteFacetOption = GeneralUtility::makeInstance(
+            'ApacheSolrForTypo3\\Solr\\Facet\\FacetOption',
+            $this->facetName,
+            ''
+        );
 
-		// the option's value will be appended by javascript after the slide event
-		$incompleteFacetOption = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\Facet\\FacetOption',
-			$this->facetName,
-			''
-		);
+        $facetLinkBuilder = GeneralUtility::makeInstance(
+            'ApacheSolrForTypo3\\Solr\\Facet\\LinkBuilder',
+            $this->search->getQuery(),
+            $this->facetName,
+            $incompleteFacetOption
+        );
 
-		$facetLinkBuilder = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\Facet\\LinkBuilder',
-			$this->search->getQuery(),
-			$this->facetName,
-			$incompleteFacetOption
-		);
-
-		$content = '
+        $content = '
 			<input type="hidden" id="' . $this->facetName . '_url" value="' . $facetLinkBuilder->getReplaceFacetOptionUrl($this->facetName) . '" />
 			<div class="input-daterange input-group" id="' . $this->facetName . '-datepicker">
 				<input id="start_date_' . $this->facetName . '" type="text" class="input-sm form-control" name="start" value="' . $dateEnds['start'] . '" />
@@ -77,63 +82,66 @@ class DateRangeFacetRenderer extends \ApacheSolrForTypo3\Solr\Facet\AbstractFace
 			</div>
 		';
 
-		return $content;
-	}
+        return $content;
+    }
 
 
-	/**
-	 * Gets the handle positions for the slider.
-	 *
-	 * @return array Array with keys start and end
-	 */
-	protected function getDateEnds() {
-		// not used
-		//$facetOptions    = $this->getFacetOptions();
+    /**
+     * Gets the handle positions for the slider.
+     *
+     * @return array Array with keys start and end
+     */
+    protected function getDateEnds()
+    {
+        // not used
+        //$facetOptions    = $this->getFacetOptions();
 
-		$start = '';
-		$end = '';
+        $start = '';
+        $end = '';
 
-		$filters = $this->search->getQuery()->getFilters();
-		foreach ($filters as $filter) {
-			if (preg_match("/\(" . $this->facetConfiguration['field'] . ":\[(.*)\]\)/", $filter, $matches) ){
-				$range = explode('TO', $matches[1]);
-				$range = array_map('trim', $range);
+        $filters = $this->search->getQuery()->getFilters();
+        foreach ($filters as $filter) {
+            if (preg_match("/\(" . $this->facetConfiguration['field'] . ":\[(.*)\]\)/", $filter, $matches)) {
+                $range = explode('TO', $matches[1]);
+                $range = array_map('trim', $range);
 
-				$start = date('d.m.Y', strtotime($range[0]));
-				$end = date('d.m.Y', strtotime($range[1]));
-				break;
-			}
-		}
+                $start = date('d.m.Y', strtotime($range[0]));
+                $end = date('d.m.Y', strtotime($range[1]));
+                break;
+            }
+        }
 
-		return array('start' => $start, 'end' => $end);
-	}
+        return ['start' => $start, 'end' => $end];
+    }
 
-	/**
-	 * Loads jQuery libraries for the date pickers.
-	 *
-	 */
-	protected function loadJavaScriptFiles() {
-		$javascriptManager = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\JavascriptManager');
+    /**
+     * Loads jQuery libraries for the date pickers.
+     *
+     */
+    protected function loadJavaScriptFiles()
+    {
+        $javascriptManager = GeneralUtility::makeInstance('ApacheSolrForTypo3\\Solr\\JavascriptManager');
 
-		$javascriptManager->loadFile('library');
-		$javascriptManager->loadFile('bs.datepicker');
+        $javascriptManager->loadFile('library');
+        $javascriptManager->loadFile('bs.datepicker');
 
-		$language = $GLOBALS['TSFE']->tmpl->setup['config.']['language'];
-		if ($language != 'en') {
-				// load date picker translation
-			$javascriptManager->loadFile('bs.datepicker.' . $language);
-		}
+        $language = $GLOBALS['TSFE']->tmpl->setup['config.']['language'];
+        if ($language != 'en') {
+            // load date picker translation
+            $javascriptManager->loadFile('bs.datepicker.' . $language);
+        }
 
-		$javascriptManager->loadFile('faceting.bsDateRangeHelper');
+        $javascriptManager->loadFile('faceting.bsDateRangeHelper');
 
-		$datepickerInitialization = $this->getDatepickerJavaScript();
-		$javascriptManager->addJavascript($this->facetName . '-datepickerInitialization', $datepickerInitialization);
+        $datepickerInitialization = $this->getDatepickerJavaScript();
+        $javascriptManager->addJavascript($this->facetName . '-datepickerInitialization', $datepickerInitialization);
 
-		$javascriptManager->addJavascriptToPage();
-	}
+        $javascriptManager->addJavascriptToPage();
+    }
 
-	protected function getDatepickerJavaScript() {
-		$datepickerJavaScript = '
+    protected function getDatepickerJavaScript()
+    {
+        $datepickerJavaScript = '
 			jQuery(document).ready(function() {
 				$(\'body\').bind(\'AjaxSearchLoaded\', function(event, params) {
 					jQuery("#' . $this->facetName . '-datepicker").datepicker({
@@ -147,27 +155,27 @@ class DateRangeFacetRenderer extends \ApacheSolrForTypo3\Solr\Facet\AbstractFace
 						todayHighlight: true
 					}).on(\'hide\', function() {
 						solrBsDateRangeRequest("'
-						. $this->facetName
-						. '", "'
-						. \ApacheSolrForTypo3\Solr\Query\FilterEncoder\DateRange::DELIMITER
-						. '")
+                        . $this->facetName
+                        . '", "'
+                        . \ApacheSolrForTypo3\Solr\Query\FilterEncoder\DateRange::DELIMITER
+                        . '")
 					});
 				});
 			});';
-		return $datepickerJavaScript;
-	}
+        return $datepickerJavaScript;
+    }
 
 
-	/**
-	 * Adds the stylesheets necessary for the slider
-	 *
-	 */
-	protected function loadStylesheets() {
-		if ($this->solrConfiguration['cssFiles.']['bs.']['datepicker'] && !$GLOBALS['TSFE']->additionalHeaderData['tx_solr-bs-datepicker-css']) {
-			$cssFile = GeneralUtility::createVersionNumberedFilename($GLOBALS['TSFE']->tmpl->getFileName($this->solrConfiguration['cssFiles.']['bs.']['datepicker']));
-			$GLOBALS['TSFE']->additionalHeaderData['tx_solr-bs-datepicker-css'] =
-				'<link href="' . $cssFile . '" rel="stylesheet" type="text/css" media="all" />';
-		}
-	}
-
+    /**
+     * Adds the stylesheets necessary for the slider
+     *
+     */
+    protected function loadStylesheets()
+    {
+        if ($this->solrConfiguration['cssFiles.']['bs.']['datepicker'] && !$GLOBALS['TSFE']->additionalHeaderData['tx_solr-bs-datepicker-css']) {
+            $cssFile = GeneralUtility::createVersionNumberedFilename($GLOBALS['TSFE']->tmpl->getFileName($this->solrConfiguration['cssFiles.']['bs.']['datepicker']));
+            $GLOBALS['TSFE']->additionalHeaderData['tx_solr-bs-datepicker-css'] =
+                '<link href="' . $cssFile . '" rel="stylesheet" type="text/css" media="all" />';
+        }
+    }
 }
