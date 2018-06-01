@@ -1,21 +1,12 @@
+page {
+  includeCSS {
+    daterangepicker = EXT:solr_bs_date_range_facet/Resources/Public/Stylesheets/Library/daterangepicker.css
+  }
 
-plugin.tx_solr {
+  includeJSLibs {
+    moment = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/moment.min.js
+    daterangepicker = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/daterangepicker.js
 
-	cssFiles {
-		bs.datepicker = EXT:solr_bs_date_range_facet/Resources/Public/Stylesheets/Library/bootstrap-datepicker3.css
-	}
-
-	javascriptFiles {
-
-		bs.datepicker    = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/bootstrap-datepicker.min.js
-		bs.datepicker.de = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/bootstrap-datepicker.de.min.js
-
-		faceting.bsDateRangeHelper = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/bs_date_range_facet.js
-	}
-}
-
-plugin.tx_solr {
-	_LOCAL_LANG.de {
-		rangebarrier = bis
-	}
+    faceting-bsDateRangeHelper = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/bs_date_range_facet.js
+  }
 }

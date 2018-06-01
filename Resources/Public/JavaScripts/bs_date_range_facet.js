@@ -1,13 +1,8 @@
-function solrBsDateRangeRequest(facetName, delimiter) {
-	if (jQuery('#start_date_'+facetName).val() != '' &&  jQuery('#end_date_'+facetName).val() != '' ) {
-		url = jQuery('#' + facetName + '_url').val();
-		start_date = convertToDateString(jQuery('#start_date_'+facetName).datepicker('getDate'));
-		end_date = convertToDateString(jQuery('#end_date_'+facetName).datepicker('getDate'));
-		requestUrls[facetName] = url + encodeURI(start_date + delimiter + end_date);
-		facetsOptionChanged(requestUrls[facetName]);
-	};
-}
-
-function convertToDateString (date) {
-	return $.prototype.datepicker.DPGlobal.formatDate(date, 'yyyymmdd', 'de');
+function solrBsDateRangeRequest(facetName, start, end) {
+	url = jQuery('#' + facetName + '_url').val();
+	start_date = start.format('YYYYMMDD');
+	end_date = end.format('YYYYMMDD');
+	url = url.replace(encodeURI('___FROM___'), start_date + '0000');
+	url = url.replace(encodeURI('___TO___'), end_date + '0000');
+	window.location.href = url;
 }
