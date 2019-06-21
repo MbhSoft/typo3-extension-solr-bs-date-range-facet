@@ -28,15 +28,14 @@ $EM_CONF[$_EXTKEY] = [
     'clearCacheOnLoad' => 0,
     'lockType' => '',
     'author_company' => '',
-    'version' => '1.0.0-dev',
+    'version' => '1.0.0',
     'constraints' => [
         'depends' => [
-            'solr' => '8.0.0'
+            'solr' => '7.0.0-8.0.0'
         ],
         'conflicts' => [
         ],
         'suggests' => [
         ],
     ],
-    '_md5_values_when_last_written' => '',
 ];
