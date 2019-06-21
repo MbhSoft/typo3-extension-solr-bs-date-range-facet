@@ -4,72 +4,25 @@
 	  data-namespace-typo3-fluid="true"
 		>
 
-<h5 class="facet-label csc-header">{facet.label}</h5>
+	<f:render partial="Facets/RangeDateBootstrapHeader" arguments="{_all}"/>
 
-<div class="facet-option-list fluidfacet facet-type-dateRange">
-	<input type="hidden" id="{facet.name}_url" value="{s:uri.facet.setFacetItem(facet: facet, facetItemValue: '___FROM___-___TO___')}" />
+	<div class="facet-option-list fluidfacet facet-type-dateRange">
+		<input type="hidden" id="{facet.name}_url" value="{s:uri.facet.setFacetItem(facet: facet, facetItemValue: '___FROM___-___TO___')}" />
+		<input type="hidden" id="{facet.name}_url_reset" value="{s:uri.facet.removeFacet(facet: facet)}" />
+		<f:if condition="{facet.range.startRequested}">
+			<f:then>
+				<input type="hidden" id="{facet.name}_start_date" value="<f:format.date format="d.m.Y">{facet.range.startRequested}</f:format.date>" />
+				<input type="hidden" id="{facet.name}_end_date" value="<f:format.date format="d.m.Y">{facet.range.endRequested}</f:format.date>" />
+			</f:then>
+			<f:else>
+				<input type="hidden" id="{facet.name}_start_date" value="" />
+				<input type="hidden" id="{facet.name}_end_date" value="" />
+			</f:else>
+		</f:if>
 
-	<div class="input-daterange input-group" >
-		<input id="{facet.name}-datepicker" type="text" class="input-sm form-control" name="start" value="" />
+		<div class="input-daterange input-group" >
+			<input id="{facet.name}-datepicker" type="text" data-facet-name="{facet.name}" class="date-range-selector input-sm form-control" name="start" value="" autocomplete="off" />
+		</div>
 	</div>
-	<script type="application/javascript">
-		jQuery(document).ready(function() <f:format.raw>{</f:format.raw>
-
-			$('#{facet.name}-datepicker').daterangepicker(<f:format.raw>{</f:format.raw>
-				"locale": {
-					"format": "DD.MM.YYYY",
-					"separator": " - ",
-					"applyLabel": "Übernehmen",
-					"cancelLabel": "Löschen",
-					"fromLabel": "Von",
-					"toLabel": "Bis",
-					"customRangeLabel": "Custom",
-					"weekLabel": "W",
-					"daysOfWeek": [
-						"So",
-						"Mo",
-						"Di",
-						"Mi",
-						"Do",
-						"Fr",
-						"Sa"
-					],
-					"monthNames": [
-						"Januar",
-						"Februar",
-						"März",
-						"April",
-						"Mai",
-						"Juni",
-						"Juli",
-						"August",
-						"September",
-						"Oktober",
-						"November",
-						"Dezember"
-					],
-					"firstDay": 1
-				},
-				<f:if condition="{facet.range.startRequested}"><f:then>
-					"startDate": "<f:format.date format="d.m.Y">{facet.range.startRequested}</f:format.date>",
-					"endDate": "<f:format.date format="d.m.Y">{facet.range.endRequested}</f:format.date>"</f:then>
-					<f:else>autoUpdateInput: false</f:else></f:if>
-				<f:format.raw>}</f:format.raw>, function(start, end, label) <f:format.raw>{</f:format.raw>
-					solrBsDateRangeRequest("{facet.name}", start, end);
-			<f:format.raw>}</f:format.raw>);
-
-			$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-				$(this).val(picker.startDate.format('MM.DD.YYYY') + ' - ' + picker.endDate.format('MM.DD.YYYY'));
-			});
-
-			$('#{facet.name}-datepicker').on('cancel.daterangepicker', function(ev, picker) <f:format.raw>{</f:format.raw>
-				$(this).val('');
-				window.location.href = "{s:uri.facet.removeFacet(facet: facet)}";
-			<f:format.raw>}</f:format.raw>);
-		<f:format.raw>}</f:format.raw>);
-	</script>
-</div>
-
-
 
 </html>

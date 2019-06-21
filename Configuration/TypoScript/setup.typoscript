@@ -1,10 +1,18 @@
 page {
+  jsInline {
+    45843095 = TEXT
+    45843095 {
+      value =  moment.locale('{$config.language}');
+    }
+  }
+
   includeCSS {
     daterangepicker = EXT:solr_bs_date_range_facet/Resources/Public/Stylesheets/Library/daterangepicker.css
   }
 
   includeJSLibs {
     moment = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/moment.min.js
+    moment-de = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/moment.locale.de.js
     daterangepicker = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/Library/daterangepicker.js
 
     faceting-bsDateRangeHelper = EXT:solr_bs_date_range_facet/Resources/Public/JavaScripts/bs_date_range_facet.js
