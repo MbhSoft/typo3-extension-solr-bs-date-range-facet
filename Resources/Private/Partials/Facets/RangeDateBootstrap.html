@@ -11,8 +11,8 @@
 		<input type="hidden" id="{facet.name}_url_reset" value="{s:uri.facet.removeFacet(facet: facet)}" />
 		<f:if condition="{facet.range.startRequested}">
 			<f:then>
-				<input type="hidden" id="{facet.name}_start_date" value="<f:format.date format="d.m.Y">{facet.range.startRequested}</f:format.date>" />
-				<input type="hidden" id="{facet.name}_end_date" value="<f:format.date format="d.m.Y">{facet.range.endRequested}</f:format.date>" />
+				<input type="hidden" id="{facet.name}_start_date" value="<f:format.date format="{f:translate(key:'dateFormat', extensionName: 'SolrBsDateRangeFacet')}">{facet.range.startRequested}</f:format.date>" />
+				<input type="hidden" id="{facet.name}_end_date" value="<f:format.date format="{f:translate(key:'dateFormat', extensionName: 'SolrBsDateRangeFacet')}">{facet.range.endRequested}</f:format.date>" />
 			</f:then>
 			<f:else>
 				<input type="hidden" id="{facet.name}_start_date" value="" />
